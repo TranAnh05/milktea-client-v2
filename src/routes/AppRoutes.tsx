@@ -3,6 +3,8 @@ import { MainLayout } from '@/components/layouts/MainLayout';
 import { LoginPage } from '@/pages/auth/LoginPage';
 import { RegisterPage } from '@/pages/auth/RegisterPage';
 import { HomePage } from '@/pages/home/HomePage';
+import { ProductDetailPage } from '@/pages/product/ProductDetailPage';
+import { CartPage } from '@/pages/cart/CartPage';
 
 export const AppRoutes = () => {
   return (
@@ -12,6 +14,8 @@ export const AppRoutes = () => {
       */}
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
+        <Route path="/product/:slug" element={<ProductDetailPage />} />
+        <Route path="/cart" element={<CartPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
       </Route>
