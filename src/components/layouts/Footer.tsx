@@ -74,6 +74,7 @@ export const Footer = () => {
           <p>© 2026 Gia Dinh Milktea. All rights reserved.</p>
           <div className="flex gap-6">
             <Link to="/terms" className="hover:text-white transition-colors">Điều khoản</Link>
+            <Link to="/track-order" className="text-orange-500 font-bold">Tra cứu đơn hàng</Link>
             <Link to="/privacy" className="hover:text-white transition-colors">Bảo mật</Link>
           </div>
         </div>

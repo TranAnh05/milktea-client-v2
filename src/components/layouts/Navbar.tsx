@@ -26,7 +26,7 @@ export const Navbar = () => {
 
     // 2. Lấy các giá trị từ AuthContext
     const { user, isAuthenticated, logout } = useAuth();
-    const { cartCount } = useCart()
+    const { cartCount } = useCart();
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -124,7 +124,7 @@ export const Navbar = () => {
                     >
                         <ShoppingBag size={22} />
                         <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">
-                           {cartCount}
+                            {cartCount}
                         </span>
                     </Link>
 
@@ -164,7 +164,13 @@ export const Navbar = () => {
                                             <Settings size={16} /> Tài khoản
                                         </Link>
                                         <Link
-                                            to="/orders"
+                                            to="/account/orders"
+                                            onClick={() =>
+                                                window.scrollTo({
+                                                    top: 0,
+                                                    behavior: "smooth",
+                                                })
+                                            }
                                             className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 text-gray-700 transition-colors"
                                         >
                                             <ClipboardList size={16} /> Đơn hàng
@@ -193,6 +199,25 @@ export const Navbar = () => {
                                     className="bg-gray-900 text-white px-5 py-2 rounded-full hover:bg-amber-500 transition-all font-medium"
                                 >
                                     Đăng ký
+                                </Link>
+                                <Link
+                                    to="/track-order"
+                                    className="flex items-center text-sm font-medium text-gray-600 hover:text-orange-500 transition-colors"
+                                >
+                                    <svg
+                                        className="w-5 h-5 mr-1"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                                        />
+                                    </svg>
+                                    Tra cứu đơn
                                 </Link>
                             </div>
                         )}
