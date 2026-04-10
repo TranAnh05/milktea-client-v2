@@ -12,4 +12,8 @@ export const authService = {
   register: async (data: RegisterRequest): Promise<ApiResponse<void>> => {
     return axiosInstance.post('/auth/register', data);
   },
+
+  verifyEmail: async (token: string): Promise<ApiResponse<void>> => {
+    return axiosInstance.post(`/auth/verify?token=${token}`); 
+  }
 };

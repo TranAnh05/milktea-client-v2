@@ -136,7 +136,6 @@ export const ProductDetailPage = () => {
     if (!product) return null;
 
     return (
-        <div className="bg-gray-50 min-h-screen py-10">
             <div className="container mx-auto px-4 md:px-8">
                 {/* --- BREADCRUMBS  --- */}
                 <nav className="flex items-center text-sm font-medium text-gray-500 mb-8 overflow-x-auto whitespace-nowrap pb-2">
@@ -148,6 +147,18 @@ export const ProductDetailPage = () => {
                     </Link>
 
                     <ChevronRight
+                        size={16}
+                        className="mx-1 text-gray-400 flex-shrink-0"
+                    />
+
+                    <Link
+                        to="/category/all"
+                        className="hover:text-amber-600 transition-colors"
+                    >
+                        Thực đơn
+                    </Link>
+
+                     <ChevronRight
                         size={16}
                         className="mx-1 text-gray-400 flex-shrink-0"
                     />
@@ -378,6 +389,5 @@ export const ProductDetailPage = () => {
                     </div>
                 </div>
             </div>
-        </div>
     );
 };

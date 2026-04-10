@@ -12,6 +12,7 @@ import OrderHistoryPage from '@/pages/order/OrderHistoryPage';
 import OrderDetailPage from '@/pages/order/OrderDetailPage';
 import TrackOrderPage from '@/pages/order/TrackOrderPage';
 import CategoryProductsPage from '@/pages/product/CategoryProductsPage';
+import { VerifyEmailPage } from '@/pages/auth/VerifyEmailPage';
 
 export const AppRoutes = () => {
   return (
@@ -29,6 +30,7 @@ export const AppRoutes = () => {
         <Route path='/track-order' element={<TrackOrderPage />}/>
         <Route path="/category/:slug" element={<CategoryProductsPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/verify-email" element={<VerifyEmailPage />} />
         <Route path="/login" element={<LoginPage />} />
 
         {/* PRIVATE ROUTES */}

@@ -58,8 +58,7 @@ export default function CategoryProductsPage() {
     : categories.find(c => c.slug === activeSlug)?.name || 'Sản phẩm';
 
   return (
-    <div className="bg-gray-50 min-h-screen py-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4 md:px-8">
         
         {/* --- BREADCRUMB --- */}
         <nav className="flex items-center text-sm text-gray-500 mb-8">
@@ -180,6 +179,5 @@ export default function CategoryProductsPage() {
           </div>
         </div>
       </div>
-    </div>
   );
 }
