@@ -63,7 +63,7 @@ export default function ThankYouPage() {
         {/* CÁC NÚT ĐIỀU HƯỚNG */}
         <div className="space-y-3">
           <Link 
-            to="/products"
+            to="/category/all"
             className="block w-full py-4 bg-orange-500 text-white rounded-xl font-bold text-lg hover:bg-orange-600 hover:shadow-lg transition-all"
           >
             TIẾP TỤC MUA SẮM

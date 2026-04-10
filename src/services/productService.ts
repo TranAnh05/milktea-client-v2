@@ -11,5 +11,9 @@ export const productService = {
 
   getProductDetail: async (slug: string): Promise<ApiResponse<ProductDetailResponse>> => {
     return axiosInstance.get(`/products/${slug}`);
-  }
+  },
+
+  getProductsByCategorySlug: async (slug: string, page: number = 0, size: number = 12) => {
+    return axiosInstance.get(`/products/category/${slug}?page=${page}&size=${size}`);
+  } 
 };

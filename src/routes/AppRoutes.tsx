@@ -11,6 +11,7 @@ import { ProtectedRoute } from './ProtectedRoute';
 import OrderHistoryPage from '@/pages/order/OrderHistoryPage';
 import OrderDetailPage from '@/pages/order/OrderDetailPage';
 import TrackOrderPage from '@/pages/order/TrackOrderPage';
+import CategoryProductsPage from '@/pages/product/CategoryProductsPage';
 
 export const AppRoutes = () => {
   return (
@@ -26,6 +27,7 @@ export const AppRoutes = () => {
         <Route path='/checkout' element={<CheckoutPage />}/>
         <Route path='/thank-you' element={<ThankYouPage />} />
         <Route path='/track-order' element={<TrackOrderPage />}/>
+        <Route path="/category/:slug" element={<CategoryProductsPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
 
