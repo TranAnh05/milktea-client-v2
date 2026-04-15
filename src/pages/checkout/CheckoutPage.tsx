@@ -98,7 +98,7 @@ export default function CheckoutPage() {
                     Hãy quay lại thực đơn để chọn món nhé!
                 </p>
                 <button
-                    onClick={() => navigate("/products")}
+                    onClick={() => navigate("/category/all")}
                     className="mt-4 px-8 py-3 bg-orange-500 text-white rounded-xl font-semibold hover:bg-orange-600 transition-all shadow-md hover:shadow-lg"
                 >
                     Tiếp tục mua sắm
@@ -209,8 +209,18 @@ export default function CheckoutPage() {
             if (response.data) {
                 toast.success("Đặt hàng thành công.");
                 clearCart();
-                
-                navigate(`/thank-you?orderId=${response.data}`);
+
+                const { orderId , finalTotal, paymentMethod } = response.data
+
+                if(paymentMethod === 'COD') {
+                    navigate(`/thank-you?orderId=${orderId}`);
+                } else if (paymentMethod === 'BANK_TRANSFER') {
+                    // VietQR Tự động: Bay sang trang hiện mã QR, truyền theo số tiền để render
+                    navigate(`/payment-qr?orderId=${orderId}&amount=${finalTotal}`);
+                } else {
+                    toast.error("Phương thức thanh toán chưa được hỗ trợ trên UI")
+                }
+
             }
         } catch (error: any) {
             toast.error(
@@ -391,25 +401,19 @@ export default function CheckoutPage() {
 
                             {/* Option 2: VNPAY (Tạm ẩn hoặc Disable nếu chưa làm backend) */}
                             <label
-                                className={`flex items-center p-4 border rounded-xl cursor-pointer transition-all ${selectedPaymentMethod === "VNPAY" ? "border-orange-500 bg-orange-50" : "border-gray-200 hover:border-orange-300"}`}
+                                className={`flex items-center p-4 border rounded-xl cursor-pointer transition-all ${selectedPaymentMethod === "BANK_TRANSFER" ? "border-orange-500 bg-orange-50" : "border-gray-200 hover:border-orange-300"}`}
                             >
                                 <input
                                     type="radio"
-                                    value="VNPAY"
+                                    value="BANK_TRANSFER"
                                     className="w-5 h-5 text-orange-500 focus:ring-orange-500"
                                     {...register("paymentMethod")}
                                 />
                                 <div className="ml-4 flex-1">
                                     <span className="block font-semibold text-gray-800">
-                                        Ví VNPAY / Thẻ ATM
-                                    </span>
-                                    <span className="block text-sm text-gray-500">
-                                        Chuyển hướng an toàn tới VNPAY
+                                        Chuyển khoản bằng ngân hàng
                                     </span>
                                 </div>
-                                <span className="text-xs font-bold bg-gray-100 text-gray-500 px-2 py-1 rounded">
-                                    Sắp ra mắt
-                                </span>
                             </label>
                         </div>
                     </div>

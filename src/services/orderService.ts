@@ -13,8 +13,14 @@ export interface OrderRequest {
   guestItems?: CartItemRequest[] | null; // để phân biệt User/Guest
 }
 
+export interface PlaceOrderResponse {
+  orderId: string,
+  finalTotal: number,
+  paymentMethod: string
+}
+
 export const orderService = {
-  placeOrder: async (request: OrderRequest): Promise<ApiResponse<string>> => {
+  placeOrder: async (request: OrderRequest): Promise<ApiResponse<PlaceOrderResponse>> => {
     return axiosInstance.post('/orders', request);
   },
 
@@ -38,5 +44,9 @@ export const orderService = {
   // Tra cứu đơn hàng cho Guest (Không cần Token)
   trackOrder: async (orderId: string, phone: string) => {
     return axiosInstance.get(`/orders/track?orderId=${orderId}&phone=${phone}`);
+  },
+
+  checkPaymentStatus: async (orderId: string) => {
+    return axiosInstance.get(`/orders/${orderId}/payment-status`);
   }
 };

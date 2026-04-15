@@ -15,7 +15,7 @@ export default function TrackOrderPage() {
   const [orderId, setOrderId] = useState('');
   const [phone, setPhone] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [orderResult, setOrderResult] = useState<any>(null); // Lưu kết quả tra cứu
+  const [orderResult, setOrderResult] = useState<any>(null); 
 
   const handleTrackOrder = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -171,7 +171,7 @@ export default function TrackOrderPage() {
                   <span className="text-2xl font-extrabold text-orange-600">{orderResult.finalTotal.toLocaleString('vi-VN')} đ</span>
                 </div>
                 <div className="pt-2 flex justify-between items-center text-xs text-gray-500">
-                  <span>Phương thức: <strong className="text-gray-700">{orderResult.paymentMethod}</strong></span>
+                  <span>Phương thức: <strong className="text-gray-700">{orderResult.paymentMethod === "COD" ? "Tiền mặt" : "Chuyển khoản ngân hàng"}</strong></span>
                   <span className={`px-2 py-1 rounded font-medium ${orderResult.paymentStatus === 'PAID' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
                     {orderResult.paymentStatus === 'PAID' ? '✓ Đã thanh toán' : 'Chưa thanh toán'}
                   </span>

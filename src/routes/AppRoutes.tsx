@@ -13,6 +13,7 @@ import OrderDetailPage from '@/pages/order/OrderDetailPage';
 import TrackOrderPage from '@/pages/order/TrackOrderPage';
 import CategoryProductsPage from '@/pages/product/CategoryProductsPage';
 import { VerifyEmailPage } from '@/pages/auth/VerifyEmailPage';
+import { PaymentQRPage } from '@/pages/checkout/PaymentQRPage';
 
 export const AppRoutes = () => {
   return (
@@ -27,6 +28,7 @@ export const AppRoutes = () => {
         <Route path="/cart" element={<CartPage />} />
         <Route path='/checkout' element={<CheckoutPage />}/>
         <Route path='/thank-you' element={<ThankYouPage />} />
+        <Route path="/payment-qr" element={<PaymentQRPage />} />
         <Route path='/track-order' element={<TrackOrderPage />}/>
         <Route path="/category/:slug" element={<CategoryProductsPage />} />
         <Route path="/register" element={<RegisterPage />} />
