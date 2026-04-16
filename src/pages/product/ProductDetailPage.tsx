@@ -184,7 +184,7 @@ export const ProductDetailPage = () => {
                     <div className="md:w-5/12">
                         <div className="sticky top-28 bg-gray-100 rounded-2xl overflow-hidden aspect-[4/5] flex items-center justify-center">
                             <img
-                                src={product.thumbnailUrl}
+                                src={`/assets/${product.thumbnailUrl}`}
                                 alt={product.name}
                                 className="w-full h-full object-cover"
                             />

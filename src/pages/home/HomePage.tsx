@@ -3,6 +3,7 @@ import { Loader2, ArrowRight } from 'lucide-react';
 import { productService } from '@/services/productService';
 import type { ProductResponse } from '@/types/product.types';
 import { ProductCard } from '@/components/common/ProductCard';
+import { Link } from 'react-router-dom';
 
 export const HomePage = () => {
   const [promoProducts, setPromoProducts] = useState<ProductResponse[]>([]);
@@ -63,9 +64,9 @@ export const HomePage = () => {
               </h2>
               <p className="text-gray-500 mt-2">Chớp ngay deal hời, mời crush đi chơi!</p>
             </div>
-            <button className="hidden md:flex text-amber-600 font-bold hover:text-amber-700 items-center gap-1">
+            <Link to={"/category/all"}  className="hidden md:flex text-amber-600 font-bold hover:text-amber-700 items-center gap-1">
               Xem tất cả <ArrowRight size={16} />
-            </button>
+            </Link>
           </div>
 
           {/* Trạng thái Loading */}

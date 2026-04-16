@@ -64,7 +64,7 @@ export const CartPage = () => {
                                 {/* Hình ảnh */}
                                 <div className="w-24 h-24 sm:w-32 sm:h-32 bg-gray-100 rounded-xl overflow-hidden flex-shrink-0">
                                     <img
-                                        src={item.thumbnailUrl}
+                                        src={`/assets/${item.thumbnailUrl}`}
                                         alt={item.productName}
                                         className="w-full h-full object-cover"
                                     />
@@ -75,7 +75,7 @@ export const CartPage = () => {
                                     <div className="flex justify-between items-start gap-4">
                                         <div>
                                             <Link
-                                                to={`/product/${item.productId}`}
+                                                to={`/product/${item.slug}`}
                                                 className="text-lg font-bold text-gray-900 hover:text-amber-600 transition-colors line-clamp-1"
                                             >
                                                 {item.productName}

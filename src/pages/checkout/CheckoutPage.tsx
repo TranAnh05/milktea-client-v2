@@ -435,8 +435,7 @@ export default function CheckoutPage() {
                                 >
                                     <img
                                         src={
-                                            item.thumbnailUrl ||
-                                            "/placeholder.png"
+                                            `/assets/${item.thumbnailUrl}`
                                         }
                                         alt={item.productName}
                                         className="w-16 h-16 object-cover rounded-lg border border-gray-100"

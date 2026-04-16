@@ -9,6 +9,7 @@ export interface CartTopping {
 export interface CartItemType {
   signature: string; // Khóa chính: Gộp từ (ProductID + SizeID + Sugar + Ice + ToppingIDs)
   productId: number;
+  slug: string;
   productName: string;
   thumbnailUrl: string;
   sizeId: number;
