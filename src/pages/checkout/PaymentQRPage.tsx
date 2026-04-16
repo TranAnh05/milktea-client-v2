@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Copy, CheckCircle2, AlertCircle, ChevronLeft, Loader2 } from 'lucide-react';
+import { Copy, CheckCircle2, AlertCircle, ChevronLeft, Loader2, XCircle, Clock } from 'lucide-react';
 import { formatCurrency } from '@/utils/formatters';
 import toast from 'react-hot-toast';
 import { orderService } from '@/services/orderService';
@@ -22,6 +22,9 @@ export const PaymentQRPage = () => {
 
     const [copiedField, setCopiedField] = useState<string | null>(null);
 
+    const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 phút = 900 giây
+    const [isTimeout, setIsTimeout] = useState(false);
+
     // Sinh nội dung chuyển khoản bắt buộc: "TS ORD-xxxx" (TS = Trà Sữa)
     const transferContent = `TS ${orderId}`;
 
@@ -34,8 +37,74 @@ export const PaymentQRPage = () => {
         }
     }, [orderId, amount, navigate]);
 
+    // CẢNH BÁO KHI F5 HOẶC ĐÓNG TAB
     useEffect(() => {
-        if (!orderId) return;
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            if (!isTimeout) {
+                e.preventDefault();
+                e.returnValue = ''; // Hiển thị cảnh báo mặc định của trình duyệt
+            }
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    }, [isTimeout]);
+
+    // CHẶN NÚT BACK CỦA TRÌNH DUYỆT (Bắt buộc với React SPA)
+    useEffect(() => {
+        // Nếu đã hết giờ thì không cần chặn nữa, cho khách back thoải mái
+        if (isTimeout) return;
+
+        // Bước 1: "Đánh lừa" trình duyệt bằng cách nhét chính cái link hiện tại vào lịch sử thêm 1 lần nữa.
+        // Việc này tạo ra một bước đệm, khiến khách bấm Back 1 lần thì vẫn ở nguyên trang này.
+        window.history.pushState(null, '', window.location.href);
+
+        // Bước 2: Lắng nghe sự kiện khách bấm nút Back
+        const handlePopState = () => {
+            const confirmLeave = window.confirm(
+                "Đơn hàng quần áo của bạn chưa được thanh toán. Bạn có chắc chắn muốn rời đi? (Đơn hàng sẽ tự động hủy sau 15 phút)"
+            );
+
+            if (confirmLeave) {
+                // Khách chọn OK (Muốn rời đi thật) -> Điều hướng về lại trang danh sách sản phẩm
+                navigate('/category/all'); 
+            } else {
+                // Khách chọn Cancel (Ở lại thanh toán nốt) 
+                // -> Tiếp tục nhét lại link hiện tại vào lịch sử để "khóa" nút Back cho lần bấm tiếp theo
+                window.history.pushState(null, '', window.location.href);
+            }
+        };
+
+        // Gắn bộ lắng nghe
+        window.addEventListener('popstate', handlePopState);
+
+        // Cleanup: Gỡ bộ lắng nghe khi trang bị hủy
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, [isTimeout, navigate]);
+
+    // ĐỒNG HỒ ĐẾM NGƯỢC 15 PHÚT
+    useEffect(() => {
+        if (timeLeft <= 0) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setIsTimeout(true);
+            return;
+        }
+        const timerId = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
+        return () => clearInterval(timerId);
+    }, [timeLeft]);
+
+    // Hàm format thời gian ra dạng MM:SS
+    const formatTime = (seconds: number) => {
+        const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+        const s = (seconds % 60).toString().padStart(2, '0');
+        return `${m}:${s}`;
+    };
+
+
+    // POLLING API (Tự ngắt khi hết giờ)
+    useEffect(() => {
+        if (!orderId || isTimeout) return;
 
         // Tạo một vòng lặp, cứ 3000ms (3 giây) chạy 1 lần
         const intervalId = setInterval(async () => {
@@ -57,13 +126,21 @@ export const PaymentQRPage = () => {
         // Cleanup function: Khi người dùng rời khỏi trang QR (bấm nút Back), phải tắt vòng lặp đi
         return () => clearInterval(intervalId);
         
-    }, [orderId, navigate]);
+    }, [orderId, navigate, isTimeout]);
 
     const handleCopy = (text: string, field: string) => {
         navigator.clipboard.writeText(text);
         setCopiedField(field);
         toast.success("Đã sao chép!");
         setTimeout(() => setCopiedField(null), 2000);
+    };
+
+    const handleGoBack = () => {
+        if (!isTimeout) {
+            const confirmLeave = window.confirm("Đơn hàng của bạn chưa được thanh toán. Bạn có chắc chắn muốn rời đi? (Đơn hàng sẽ tự động hủy sau 15 phút)");
+            if (!confirmLeave) return;
+        }
+        navigate('/category/all'); 
     };
 
     if (!orderId || !amount) return null;
@@ -74,18 +151,40 @@ export const PaymentQRPage = () => {
                 
                 {/* Nút quay lại */}
                 <button 
-                    onClick={() => navigate('/category/all')}
+                    onClick={handleGoBack}
                     className="flex items-center text-gray-500 hover:text-amber-600 font-medium mb-6 transition-colors"
                 >
                     <ChevronLeft size={20} className="mr-1" />
-                    Tiếp tục mua sắm
+                    {isTimeout  ? "Tiếp tục mua sắm" : "Rời khỏi trang thanh toán"}
                 </button>
 
-                <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden flex flex-col md:flex-row">
+                <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden flex flex-col md:flex-row relative">
+
+                    {/* Lớp phủ mờ khi hết thời gian (Timeout Overlay) */}
+                    {isTimeout && (
+                        <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex flex-col items-center justify-center text-center p-6">
+                            <XCircle className="text-red-500 mb-4 w-16 h-16" />
+                            <h2 className="text-2xl font-bold text-gray-900 mb-2">Đã hết thời gian thanh toán</h2>
+                            <p className="text-gray-600 mb-6">Mã QR này không còn hiệu lực. Đơn hàng của bạn đã bị hủy.</p>
+                            <button 
+                                onClick={() => navigate('/category/all')}
+                                className="px-6 py-3 bg-gray-900 text-white rounded-xl font-bold hover:bg-gray-800 transition-colors"
+                            >
+                                Đặt hàng lại
+                            </button>
+                        </div>
+                    )}
                     
                     {/* CỘT TRÁI: HIỂN THỊ MÃ QR */}
-                    <div className="md:w-1/2 p-8 bg-amber-50 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-amber-100">
+                    <div className={`md:w-1/2 p-8 bg-amber-50 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-amber-100 ${isTimeout ? 'opacity-30' : ''}`}>
                         <h2 className="text-2xl font-extrabold text-gray-900 mb-2">Thanh toán qua mã QR</h2>
+
+                        {/* Đồng hồ đếm ngược */}
+                        <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-amber-200 text-amber-600 font-bold mb-6">
+                            <Clock size={18} />
+                            <span className="tracking-wider">{formatTime(timeLeft)}</span>
+                        </div>
+
                         <p className="text-gray-600 mb-6 text-center text-sm">
                             Mở ứng dụng ngân hàng và quét mã bên dưới để thanh toán.
                         </p>
@@ -100,10 +199,12 @@ export const PaymentQRPage = () => {
                             <img src={qrUrl} alt="VietQR" className="w-64 h-64 object-contain" />
                         </div>
 
-                        <div className="mt-8 flex items-center justify-center gap-2 text-amber-600 font-bold bg-amber-100/50 px-6 py-3 rounded-full animate-pulse">
-                            <Loader2 className="animate-spin" size={20} />
-                            Hệ thống đang chờ nhận tiền...
-                        </div>
+                        {!isTimeout && (
+                            <div className="mt-8 flex items-center justify-center gap-2 text-amber-600 font-bold bg-amber-100/50 px-6 py-3 rounded-full animate-pulse">
+                                <Loader2 className="animate-spin" size={20} />
+                                Hệ thống đang chờ nhận tiền...
+                            </div>
+                        )}
                     </div>
 
                     {/* CỘT PHẢI: CHUYỂN KHOẢN THỦ CÔNG */}
