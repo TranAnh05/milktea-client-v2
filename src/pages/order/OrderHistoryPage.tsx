@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/pages/OrderHistoryPage.tsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { orderService } from '@/services/orderService';
 import OrderCard from '@/components/order/OrderCard';
 import toast from 'react-hot-toast';
@@ -8,6 +10,7 @@ import toast from 'react-hot-toast';
 const TABS = [
   { id: '', label: 'Tất cả' },
   { id: 'PENDING', label: 'Chờ xác nhận' },
+  {id: 'CONFIRMED', label:  "Đã xác nhận"},
   { id: 'PREPARING', label: 'Đang pha chế' },
   { id: 'DELIVERING', label: 'Đang giao' },
   { id: 'COMPLETED', label: 'Hoàn thành' },

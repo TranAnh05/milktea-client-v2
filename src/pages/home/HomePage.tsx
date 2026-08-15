@@ -37,9 +37,9 @@ export const HomePage = () => {
             <p className="text-gray-600 text-lg mb-8 max-w-lg">
               Trải nghiệm hương vị trà sữa nguyên bản, được pha chế thủ công với nguyên liệu an toàn 100% dành riêng cho sinh viên Gia Định.
             </p>
-            <button className="bg-gray-900 text-white px-8 py-4 rounded-full font-bold hover:bg-amber-500 transition-all flex items-center gap-2">
+            <Link to={"/category/all"} className=" bg-gray-900 text-white px-8 py-4 rounded-full font-bold hover:bg-amber-500 transition-all inline-flex items-center gap-2">
               Khám phá thực đơn <ArrowRight size={20} />
-            </button>
+            </Link>
           </div>
           
           {/* Hình ảnh minh họa Banner */}

@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/components/orders/OrderCard.tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import CancelOrderModal from './CancelOrderModal';
 import { Link } from 'react-router-dom';
 
@@ -11,6 +12,7 @@ interface OrderCardProps {
 // Cấu hình màu sắc và text cho từng trạng thái
 const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
   PENDING: { label: 'Chờ xác nhận', color: 'bg-yellow-100 text-yellow-800' },
+  CONFIRMED: {label: 'Đã xác nhận', color: 'bg-yellow-100 text-yellow-800'},
   PREPARING: { label: 'Đang pha chế', color: 'bg-blue-100 text-blue-800' },
   DELIVERING: { label: 'Đang giao hàng', color: 'bg-indigo-100 text-indigo-800' },
   COMPLETED: { label: 'Hoàn thành', color: 'bg-green-100 text-green-800' },
