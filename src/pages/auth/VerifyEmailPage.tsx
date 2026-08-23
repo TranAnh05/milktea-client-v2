@@ -37,7 +37,7 @@ export const VerifyEmailPage = () => {
   }, [token]);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center p-4">
       <div className="bg-white p-8 md:p-10 rounded-3xl shadow-xl max-w-md w-full text-center border border-gray-100">
         
         {/* TRẠNG THÁI 1: ĐANG XỬ LÝ */}

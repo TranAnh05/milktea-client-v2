@@ -20,7 +20,7 @@ export const Header = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-    const [isMobileCategoryOpen, setIsMobileCategoryOpen] = useState(false); // Thêm state cho mobile category
+    const [isMobileCategoryOpen, setIsMobileCategoryOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // Thêm state cho Dropdown user
 
     const [categories, setCategories] = useState<CategoryResponse[]>([]);
@@ -82,7 +82,7 @@ export const Header = () => {
                     </Link>
 
                     {/* DESKTOP MENU */}
-                    <nav className="hidden md:flex items-center gap-8 font-medium text-gray-700">
+                    <nav className="hidden lg:flex items-center gap-8 font-medium text-gray-700">
                         <Link
                             to="/"
                             className="hover:text-amber-500 transition-colors"
@@ -128,10 +128,6 @@ export const Header = () => {
 
                     {/* ICONS & ACTIONS */}
                     <div className="flex items-center gap-5">
-                        <button className="text-gray-600 hover:text-amber-500 transition-colors hidden sm:block">
-                            <Search size={22} />
-                        </button>
-
                         {/* Icon Giỏ hàng */}
                         <Link
                             to="/cart"

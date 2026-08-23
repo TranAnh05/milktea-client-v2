@@ -24,7 +24,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
       <Link to={`/product/${product.slug}`} className="relative h-56 overflow-hidden bg-gray-50 flex items-center justify-center">
         {/* Dùng ảnh placeholder nếu chưa có link thật */}
         <img 
-          src={`/assets/${product.thumbnailUrl}`} 
+          src={product.thumbnailUrl} 
           alt={product.name} 
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />

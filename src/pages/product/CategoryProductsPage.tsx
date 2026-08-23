@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { LayoutGrid, ChevronRight } from 'lucide-react';
 import { productService } from '@/services/productService';
@@ -7,6 +8,13 @@ import { ProductCard } from '@/components/common/ProductCard';
 import type { ProductResponse } from '@/types/product.types';
 import type { CategoryResponse } from '@/types/category.types';
 import toast from 'react-hot-toast';
+import SelectOption, { type OptionItem } from '@/components/common/SelectOption';
+
+const sortOptions: OptionItem[] = [
+    { label: 'Mới nhất', value: 'newest' },
+    { label: 'Giá: Thấp đến Cao', value: 'price_asc' },
+    { label: 'Giá: Cao đến Thấp', value: 'price_desc' },
+];
 
 export default function CategoryProductsPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -16,6 +24,8 @@ export default function CategoryProductsPage() {
   const [products, setProducts] = useState<ProductResponse[]>([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+
+  const [sortValue, setSortValue] = useState<string>('newest');
 
   // 1. Lấy danh sách Categories cho Sidebar (Chỉ chạy 1 lần)
   useEffect(() => {
@@ -138,12 +148,12 @@ export default function CategoryProductsPage() {
               </h1>
               
               <div className="flex items-center gap-2 text-sm">
-                <span className="text-gray-500">Sắp xếp:</span>
-                <select className="bg-white border border-gray-200 text-gray-700 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-amber-500 cursor-pointer">
-                  <option>Mới nhất</option>
-                  <option>Giá: Thấp đến Cao</option>
-                  <option>Giá: Cao đến Thấp</option>
-                </select>
+                <SelectOption
+                  label="Sắp xếp:"
+                  options={sortOptions}
+                  value={sortValue}
+                  onChange={(val: string) => setSortValue(val)}
+                />
               </div>
             </div>
 
@@ -151,7 +161,7 @@ export default function CategoryProductsPage() {
             {isLoadingProducts ? (
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <div key={i} className="h-[350px] bg-white rounded-2xl border border-gray-100 shadow-sm animate-pulse p-4 flex flex-col">
+                  <div key={i} className="h-87.5 bg-white rounded-2xl border border-gray-100 shadow-sm animate-pulse p-4 flex flex-col">
                     <div className="h-40 bg-gray-200 rounded-xl mb-4"></div>
                     <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
                     <div className="h-4 bg-gray-200 rounded w-1/2 mb-auto"></div>
@@ -168,7 +178,7 @@ export default function CategoryProductsPage() {
                 <p className="text-gray-500 max-w-sm">Hiện tại chưa có sản phẩm nào thuộc danh mục này. Vui lòng quay lại sau nhé!</p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {products.map((product) => (
                   // NHÚNG COMPONENT CỦA EM VÀO ĐÂY
                   <ProductCard key={product.id} product={product} />
