@@ -18,9 +18,6 @@ import { PaymentQRPage } from '@/pages/checkout/PaymentQRPage';
 export const AppRoutes = () => {
   return (
     <Routes>
-      {/* Bọc MainLayout ở ngoài. 
-        Tất cả các route con ở trong sẽ tự động có Navbar ở trên và Footer ở dưới 
-      */}
       <Route element={<MainLayout />}>
         {/* PUBLIC ROUTES */}
         <Route path="/" element={<HomePage />} />
@@ -39,11 +36,8 @@ export const AppRoutes = () => {
         <Route element={<ProtectedRoute />}>
           <Route path="/account/orders" element={<OrderHistoryPage />} />
           
-          {/* Chuẩn bị sẵn chỗ cho trang Chi tiết đơn hàng (Sẽ làm tiếp theo) */}
           <Route path="/account/orders/:orderId" element={<OrderDetailPage />} />
           
-          {/* Sau này em có thể thêm các trang cá nhân khác ở đây */}
-          {/* <Route path="/account/profile" element={<ProfilePage />} /> */}
         </Route>
       </Route>
     </Routes>

@@ -1,22 +1,18 @@
 import axios from 'axios';
 import { BASE_URL, STORAGE_KEYS } from './constants';
 
-// 1. Khởi tạo một instance của Axios
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-  // timeout: 10000, // Có thể thiết lập tự động hủy request nếu server phản hồi quá 10s
+  timeout: 10000,
 });
 
-// 2. Request Interceptor (Can thiệp trước khi gửi API lên Backend)
 axiosInstance.interceptors.request.use(
   (config) => {
-    // Tìm thẻ thông hành (Token) trong Local Storage
     const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
     
-    // Nếu có token, tự động móc nó vào Header Authorization của mọi API
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -28,11 +24,8 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// 3. Response Interceptor (Can thiệp khi Backend trả kết quả về)
 axiosInstance.interceptors.response.use(
   (response) => {
-    // Phép thuật ở đây: Vì Backend Spring Boot đã bọc dữ liệu bằng class ApiResponse<T>
-    // Nên chúng ta bóc luôn lớp vỏ response mặc định của Axios, chỉ lấy response.data
     return response.data; 
   },
   (error) => {
@@ -42,7 +35,6 @@ axiosInstance.interceptors.response.use(
 
       // Nếu Backend báo 401 Unauthorized (Token hết hạn hoặc sai mật khẩu)
       if (status === 401) {
-        // Xóa token cũ rác đi
         localStorage.removeItem(STORAGE_KEYS.TOKEN);
         localStorage.removeItem(STORAGE_KEYS.USER_INFO);
         
