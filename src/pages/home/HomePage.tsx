@@ -42,7 +42,6 @@ export const HomePage = () => {
             </Link>
           </div>
           
-          {/* Hình ảnh minh họa Banner */}
           <div className="md:w-1/2 relative">
             <div className="absolute inset-0 bg-amber-200 rounded-full blur-3xl opacity-50 transform translate-x-10 translate-y-10"></div>
             <img 
@@ -54,40 +53,42 @@ export const HomePage = () => {
         </div>
       </section>
 
-      {/* --- SECTION: ƯU ĐÃI HÔM NAY --- */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 md:px-8">
-          <div className="flex justify-between items-end mb-10">
-            <div>
-              <h2 className="text-3xl font-extrabold text-gray-900 flex items-center gap-2">
-                Ưu Đãi Hôm Nay
-              </h2>
-              <p className="text-gray-500 mt-2">Chớp ngay deal hời, mời crush đi chơi!</p>
+      {/* KHUYẾN MÃI */}
+      {promoProducts.length > 0 && (
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4 md:px-8">
+            <div className="flex justify-between items-end mb-10">
+              <div>
+                <h2 className="text-3xl font-extrabold text-gray-900 flex items-center gap-2">
+                  Ưu Đãi Hôm Nay
+                </h2>
+                <p className="text-gray-500 mt-2">Chớp ngay deal hời, mời crush đi chơi!</p>
+              </div>
+              <Link to={"/category/all"}  className="hidden md:flex text-amber-600 font-bold hover:text-amber-700 items-center gap-1">
+                Xem tất cả <ArrowRight size={16} />
+              </Link>
             </div>
-            <Link to={"/category/all"}  className="hidden md:flex text-amber-600 font-bold hover:text-amber-700 items-center gap-1">
-              Xem tất cả <ArrowRight size={16} />
-            </Link>
-          </div>
 
-          {/* Trạng thái Loading */}
-          {isLoading ? (
-            <div className="flex justify-center items-center py-20">
-              <Loader2 className="animate-spin text-amber-500" size={40} />
-            </div>
-          ) : promoProducts.length === 0 ? (
-            <div className="text-center py-20 text-gray-500 bg-gray-50 rounded-2xl">
-              Hiện tại chưa có chương trình khuyến mãi nào. Bạn quay lại sau nhé!
-            </div>
-          ) : (
-            /* Lưới Sản phẩm: 1 cột mobile, 2 cột tablet, 4 cột desktop */
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {promoProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+            {/* Trạng thái Loading */}
+            {isLoading ? (
+              <div className="flex justify-center items-center py-20">
+                <Loader2 className="animate-spin text-amber-500" size={40} />
+              </div>
+            ) : promoProducts.length === 0 ? (
+              <div className="text-center py-20 text-gray-500 bg-gray-50 rounded-2xl">
+                Hiện tại chưa có chương trình khuyến mãi nào. Bạn quay lại sau nhé!
+              </div>
+            ) : (
+              /* Lưới Sản phẩm: 1 cột mobile, 2 cột tablet, 4 cột desktop */
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {promoProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
     </div>
   );
 };

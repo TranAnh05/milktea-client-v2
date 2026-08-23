@@ -32,10 +32,10 @@ export const Footer = () => {
           <div>
             <h3 className="text-white font-bold text-lg mb-6">Khám Phá</h3>
             <ul className="space-y-4">
-              <li><Link to="/menu" className="hover:text-amber-500 transition-colors">Thực đơn</Link></li>
-              <li><Link to="/about" className="hover:text-amber-500 transition-colors">Về chúng tôi</Link></li>
-              <li><Link to="/blog" className="hover:text-amber-500 transition-colors">Blog Trà Sữa</Link></li>
-              <li><Link to="/stores" className="hover:text-amber-500 transition-colors">Hệ thống cửa hàng</Link></li>
+              <li><Link to="/category/all" className="hover:text-amber-500 transition-colors">Thực đơn</Link></li>
+              <li><Link to="/" className="hover:text-amber-500 transition-colors">Về chúng tôi</Link></li>
+              <li><Link to="/" className="hover:text-amber-500 transition-colors">Blog Trà Sữa</Link></li>
+              <li><Link to="/" className="hover:text-amber-500 transition-colors">Hệ thống cửa hàng</Link></li>
             </ul>
           </div>
 
@@ -43,9 +43,9 @@ export const Footer = () => {
           <div>
             <h3 className="text-white font-bold text-lg mb-6">Chính Sách</h3>
             <ul className="space-y-4">
-              <li><Link to="/policy/shipping" className="hover:text-amber-500 transition-colors">Chính sách giao hàng</Link></li>
-              <li><Link to="/policy/privacy" className="hover:text-amber-500 transition-colors">Bảo mật thông tin</Link></li>
-              <li><Link to="/faq" className="hover:text-amber-500 transition-colors">Câu hỏi thường gặp</Link></li>
+              <li><Link to="/" className="hover:text-amber-500 transition-colors">Chính sách giao hàng</Link></li>
+              <li><Link to="/" className="hover:text-amber-500 transition-colors">Bảo mật thông tin</Link></li>
+              <li><Link to="/" className="hover:text-amber-500 transition-colors">Câu hỏi thường gặp</Link></li>
             </ul>
           </div>
 
@@ -73,9 +73,9 @@ export const Footer = () => {
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500">
           <p>© 2026 Gia Dinh Milktea. All rights reserved.</p>
           <div className="flex gap-6">
-            <Link to="/terms" className="hover:text-white transition-colors">Điều khoản</Link>
+            <Link to="/" className="hover:text-white transition-colors">Điều khoản</Link>
             <Link to="/track-order" className="text-orange-500 font-bold">Tra cứu đơn hàng</Link>
-            <Link to="/privacy" className="hover:text-white transition-colors">Bảo mật</Link>
+            <Link to="/" className="hover:text-white transition-colors">Bảo mật</Link>
           </div>
         </div>
       </div>
