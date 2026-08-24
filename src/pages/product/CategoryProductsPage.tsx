@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { LayoutGrid, ChevronRight } from 'lucide-react';
+import { LayoutGrid } from 'lucide-react';
 import { productService } from '@/services/productService';
 import { categoryService } from '@/services/categoryService';
 import { ProductCard } from '@/components/common/ProductCard'; 
@@ -9,6 +9,7 @@ import type { ProductResponse } from '@/types/product.types';
 import type { CategoryResponse } from '@/types/category.types';
 import toast from 'react-hot-toast';
 import SelectOption, { type OptionItem } from '@/components/common/SelectOption';
+import Breadcrumb from '@/components/common/Breadcrumb';
 
 const sortOptions: OptionItem[] = [
     { label: 'Mới nhất', value: 'newest' },
@@ -67,21 +68,21 @@ export default function CategoryProductsPage() {
     ? 'Tất cả sản phẩm' 
     : categories.find(c => c.slug === activeSlug)?.name || 'Sản phẩm';
 
+    const breadcrumbItems = [
+        { label: "Trang chủ", link: "/" },
+        ...(activeSlug === 'all'
+            ? [{ label: "Thực đơn" }]
+            : [
+                { label: "Thực đơn", link: "/category/all" },
+                { label: currentCategoryName },
+              ]),
+    ];
+
   return (
       <div className="container mx-auto px-4 md:px-8">
         
         {/* --- BREADCRUMB --- */}
-        <nav className="flex items-center text-sm text-gray-500 mb-8">
-          <Link to="/" className="hover:text-amber-500 transition-colors">Trang chủ</Link>
-          <ChevronRight size={16} className="mx-2" />
-          <Link to="/category/all" className="hover:text-amber-500 transition-colors">Thực đơn</Link>
-          {activeSlug !== 'all' && (
-            <>
-              <ChevronRight size={16} className="mx-2" />
-              <span className="text-gray-900 font-medium">{currentCategoryName}</span>
-            </>
-          )}
-        </nav>
+        <Breadcrumb items={breadcrumbItems} />
 
         <div className="flex flex-col lg:flex-row gap-8">
           

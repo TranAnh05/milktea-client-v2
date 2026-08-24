@@ -1,14 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect, useMemo } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
     Star,
     Minus,
     Plus,
     ShoppingCart,
     Loader2,
-    Home,
-    ChevronRight,
 } from "lucide-react";
 import { productService } from "@/services/productService";
 import type {
@@ -19,6 +18,7 @@ import type {
 import { formatCurrency } from "@/utils/formatters";
 import toast from "react-hot-toast";
 import { useCart } from "@/hooks/useCart";
+import Breadcrumb from '@/components/common/Breadcrumb';
 
 const SUGAR_LEVELS = ["100%", "70%", "50%", "30%", "0%"];
 const ICE_LEVELS = ["100%", "70%", "50%", "0% (Nóng)"];
@@ -122,7 +122,7 @@ export const ProductDetailPage = () => {
         };
 
         // 4. Bắn vào Context!
-        addToCart(cartItem);
+        addToCart(cartItem as any); // Type any vì CartItem chưa được định nghĩa rõ ràng
         toast.success("Đã thêm vào giỏ hàng!");
     };
 
@@ -135,56 +135,24 @@ export const ProductDetailPage = () => {
         );
     if (!product) return null;
 
+    const breadcrumbItems = [
+        { label: "Trang chủ", link: "/" },
+        { label: "Thực đơn", link: "/category/all" },
+        { label: product.categoryName, link: `/category/${product.categorySlug}` },
+        { label: product.name },
+    ];
+
     return (
             <div className="container mx-auto px-4 md:px-8">
                 {/* --- BREADCRUMBS  --- */}
-                <nav className="flex items-center text-sm font-medium text-gray-500 mb-8 overflow-x-auto whitespace-nowrap pb-2">
-                    <Link
-                        to="/"
-                        className="flex items-center gap-1 hover:text-amber-600 transition-colors"
-                    >
-                        <Home size={16} /> Trang chủ
-                    </Link>
+                <Breadcrumb items={breadcrumbItems} />
 
-                    <ChevronRight
-                        size={16}
-                        className="mx-1 text-gray-400 flex-shrink-0"
-                    />
-
-                    <Link
-                        to="/category/all"
-                        className="hover:text-amber-600 transition-colors"
-                    >
-                        Thực đơn
-                    </Link>
-
-                     <ChevronRight
-                        size={16}
-                        className="mx-1 text-gray-400 flex-shrink-0"
-                    />
-
-                    <Link
-                        to={`/category/${product.categorySlug}`}
-                        className="hover:text-amber-600 transition-colors"
-                    >
-                        {product.categoryName}
-                    </Link>
-
-                    <ChevronRight
-                        size={16}
-                        className="mx-1 text-gray-400 flex-shrink-0"
-                    />
-
-                    <span className="text-gray-900 font-bold max-w-[200px] sm:max-w-md truncate">
-                        {product.name}
-                    </span>
-                </nav>
-                <div className="bg-white rounded-3xl shadow-sm p-6 md:p-10 flex flex-col md:flex-row gap-10">
+                <div className="bg-white rounded-3xl shadow-sm p-6 md:p-10 flex flex-col lg:flex-row gap-10">
                     {/* CỘT TRÁI: HÌNH ẢNH (Sticky) */}
-                    <div className="md:w-5/12">
-                        <div className="sticky top-28 bg-gray-100 rounded-2xl overflow-hidden aspect-[4/5] flex items-center justify-center">
+                    <div className="lg:w-5/12">
+                        <div className="sticky top-28 bg-gray-100 rounded-2xl overflow-hidden aspect-4/5 flex items-center justify-center">
                             <img
-                                src={`/assets/${product.thumbnailUrl}`}
+                                src={product.thumbnailUrl}
                                 alt={product.name}
                                 className="w-full h-full object-cover"
                             />
@@ -197,7 +165,7 @@ export const ProductDetailPage = () => {
                     </div>
 
                     {/* CỘT PHẢI: CHI TIẾT & FORM */}
-                    <div className="md:w-7/12 flex flex-col">
+                    <div className="lg:w-7/12 flex flex-col">
                         {/* Header */}
                         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">
                             {product.name}
@@ -231,7 +199,7 @@ export const ProductDetailPage = () => {
                         <div className="h-px bg-gray-200 mb-8"></div>
 
                         {/* --- FORM CẤU HÌNH --- */}
-                        <div className="space-y-8 flex-grow">
+                        <div className="space-y-8 grow">
                             {/* 1. Chọn Size */}
                             <div>
                                 <h3 className="text-lg font-bold text-gray-900 mb-3">
@@ -380,7 +348,7 @@ export const ProductDetailPage = () => {
                             {/* Nút Thêm vào giỏ */}
                             <button
                                 onClick={handleAddToCart}
-                                className="flex-grow w-full h-14 bg-amber-500 text-white rounded-2xl font-black text-lg flex items-center justify-center gap-2 hover:bg-amber-600 shadow-lg shadow-amber-200 transition-all active:scale-95"
+                                className="grow w-full h-14 bg-amber-500 text-white rounded-2xl font-black text-lg flex items-center justify-center gap-2 hover:bg-amber-600 shadow-lg shadow-amber-200 transition-all active:scale-95"
                             >
                                 <ShoppingCart size={22} />
                                 Thêm vào giỏ • {formatCurrency(totalPrice)}
