@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { orderService } from '@/services/orderService';
 import toast from 'react-hot-toast';
@@ -88,12 +90,12 @@ export default function OrderDetailPage() {
           <h3 className="text-base font-bold text-gray-800 mb-4 border-b pb-2 uppercase">Thông tin giao hàng</h3>
           <div className="bg-gray-50/50 rounded-xl p-4 grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 text-sm text-gray-700">
             <div>
-              <p className="mb-2"><span className="text-gray-500 w-24 inline-block">Người nhận:</span> <span className="font-semibold">{order.guestName}</span></p>
-              <p><span className="text-gray-500 w-24 inline-block">Điện thoại:</span> <span className="font-semibold">{order.guestPhone}</span></p>
+              <p className="mb-2"><span className="text-gray-500 mr-1 inline-block">Người nhận:</span> <span className="font-semibold">{order.guestName}</span></p>
+              <p><span className="text-gray-500 mr-1 inline-block">Điện thoại:</span> <span className="font-semibold">{order.guestPhone}</span></p>
             </div>
             <div>
-              <p className="mb-2"><span className="text-gray-500 w-24 inline-block">Địa chỉ:</span> <span className="font-semibold">{order.guestAddress}</span></p>
-              {order.note && <p><span className="text-gray-500 w-24 inline-block">Ghi chú:</span> <span className="font-medium text-orange-600 italic">"{order.note}"</span></p>}
+              <p className="mb-2"><span className="text-gray-500 mr-1 inline-block">Địa chỉ:</span> <span className="font-semibold">{order.guestAddress}</span></p>
+              {order.note && <p><span className="text-gray-500 mr-1 inline-block">Ghi chú:</span> <span className="font-medium text-orange-600 italic">"{order.note}"</span></p>}
             </div>
           </div>
 

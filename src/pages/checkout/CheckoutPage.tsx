@@ -8,10 +8,7 @@ import toast from "react-hot-toast";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { clearCart } from "@/redux/slices/cartSlice";
 import { orderService, type OrderRequest } from "@/services/orderService";
-import {
-    voucherService,
-    type VoucherResponse,
-} from "@/services/voucherService";
+import { voucherService, type VoucherResponse, } from "@/services/voucherService";
 
 type CheckoutFormInputs = {
     customerName: string;
@@ -29,7 +26,6 @@ export default function CheckoutPage() {
 
     const cartTotal = cartItems.reduce((sum, item) => sum + item.totalPrice, 0);
 
-    // --- STATE CHO VOUCHER ---
     const [voucherCodeInput, setVoucherCodeInput] = useState("");
     const [appliedVoucher, setAppliedVoucher] = useState<{
         id: number;
@@ -39,7 +35,6 @@ export default function CheckoutPage() {
     const [isApplyingVoucher, setIsApplyingVoucher] = useState(false);
     const [voucherError, setVoucherError] = useState<string | null>(null);
 
-    // --- STATE CHO VÍ VOUCHER ---
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [activeVouchers, setActiveVouchers] = useState<VoucherResponse[]>([]);
     const [isLoadingVouchers, setIsLoadingVouchers] = useState(false);
@@ -51,7 +46,6 @@ export default function CheckoutPage() {
         cartTotal + SHIPPING_FEE - (appliedVoucher?.discountAmount || 0),
     );
 
-    // Khởi tạo React Hook Form
     const {
         register,
         handleSubmit,
@@ -60,7 +54,7 @@ export default function CheckoutPage() {
         formState: { errors, isSubmitting },
     } = useForm<CheckoutFormInputs>({
         defaultValues: {
-            paymentMethod: "COD", // Mặc định chọn COD
+            paymentMethod: "COD", 
         },
     });
 
@@ -74,7 +68,6 @@ export default function CheckoutPage() {
         }
     }, [isAuthenticated, user, setValue]);
 
-    // Handle giỏ hàng trống
     if (cartItems.length === 0) {
         return (
             <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-4 bg-gray-50">
@@ -112,7 +105,6 @@ export default function CheckoutPage() {
     const openVoucherModal = async () => {
         setIsModalOpen(true);
         if (activeVouchers.length === 0) {
-            // Tránh gọi API nhiều lần nếu đã có data
             setIsLoadingVouchers(true);
             try {
                 const res = await voucherService.getActiveVouchers();
@@ -163,7 +155,6 @@ export default function CheckoutPage() {
                 error.message ||
                 "Mã giảm giá không hợp lệ.";
             setVoucherError(errorMessage);
-            // Xóa voucher hiện tại nếu nhập mã sai
             setAppliedVoucher(null);
         } finally {
             setIsApplyingVoucher(false);
@@ -192,10 +183,7 @@ export default function CheckoutPage() {
                 note: data.note,
                 paymentMethod: data.paymentMethod,
                 voucherId: appliedVoucher ? appliedVoucher.id : null,
-                // Ép kiểu chuẩn xác cho khách vãng lai
-                guestItems: isAuthenticated
-                    ? null
-                    : cartItems.map((item) => ({
+                guestItems: cartItems.map((item) => ({
                           signature: item.signature,
                           productId: item.productId,
                           sizeId: item.sizeId,
@@ -217,7 +205,6 @@ export default function CheckoutPage() {
                 if(paymentMethod === 'COD') {
                     navigate(`/thank-you?orderId=${orderId}`);
                 } else if (paymentMethod === 'BANK_TRANSFER') {
-                    // VietQR Tự động: Bay sang trang hiện mã QR, truyền theo số tiền để render
                     navigate(`/payment-qr?orderId=${orderId}&amount=${finalTotal}`);
                 } else {
                     toast.error("Phương thức thanh toán chưa được hỗ trợ trên UI")
@@ -242,7 +229,6 @@ export default function CheckoutPage() {
                 onSubmit={handleSubmit(onSubmit)}
                 className="grid grid-cols-1 lg:grid-cols-12 gap-10"
             >
-                {/* CỘT TRÁI: THÔNG TIN GIAO HÀNG & THANH TOÁN */}
                 <div className="lg:col-span-7 space-y-8">
                     {/* Card: Thông tin giao hàng */}
                     <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
@@ -436,9 +422,7 @@ export default function CheckoutPage() {
                                     className="flex gap-4 items-start"
                                 >
                                     <img
-                                        src={
-                                            `/assets/${item.thumbnailUrl}`
-                                        }
+                                        src={item.thumbnailUrl}
                                         alt={item.productName}
                                         className="w-16 h-16 object-cover rounded-lg border border-gray-100"
                                     />
@@ -616,14 +600,26 @@ export default function CheckoutPage() {
             {/* ================= MODAL VÍ VOUCHER ================= */}
             {isModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 transition-opacity">
-                    <div className="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col max-h-[80vh]">
+                    <div
+                        className="absolute inset-0 bg-black/50"
+                        onClick={() => {
+                            setIsModalOpen(false);
+                            setVoucherCodeInput("");
+                            setVoucherError(null);
+                        }}
+                    ></div>
+                    <div className="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col max-h-[80vh] relative z-10">
                         {/* Header Modal */}
                         <div className="p-4 border-b flex justify-between items-center bg-gray-50">
                             <h3 className="text-lg font-bold text-gray-800">
                                 Chọn mã khuyến mãi
                             </h3>
                             <button
-                                onClick={() => setIsModalOpen(false)}
+                                onClick={() => {
+                                    setIsModalOpen(false);
+                                    setVoucherCodeInput("");
+                                    setVoucherError(null);
+                                }}
                                 className="text-gray-400 hover:text-gray-600"
                             >
                                 <svg

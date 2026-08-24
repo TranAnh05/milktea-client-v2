@@ -14,6 +14,7 @@ import { logout } from "@/redux/slices/authSlice";
 
 import type { CategoryResponse } from "@/types/category.types";
 import { categoryService } from "@/services/categoryService";
+import toast from "react-hot-toast";
 
 export const Header = () => {
     const navigate = useNavigate();
@@ -151,9 +152,8 @@ export const Header = () => {
                             {isAuthenticated && user ? (
                                 // Trạng thái: ĐÃ ĐĂNG NHẬP -> Hiện Tên + Avatar + Dropdown
                                 <div
-                                    className="relative group cursor-pointer"
-                                    onMouseEnter={() => setIsUserMenuOpen(true)}
-                                    onMouseLeave={() => setIsUserMenuOpen(false)}
+                                    className="relative cursor-pointer"
+                                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                                 >
                                     <div className="flex items-center gap-2 pl-4 border-l border-gray-200">
                                         <div className="w-9 h-9 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center font-bold">
@@ -175,12 +175,12 @@ export const Header = () => {
                                         className={`absolute top-full right-0 w-48 pt-4 transition-all duration-300 ${isUserMenuOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible translate-y-2"}`}
                                     >
                                         <div className="bg-white border border-gray-100 shadow-xl rounded-xl py-2 overflow-hidden flex flex-col">
-                                            <Link
-                                                to="/profile"
+                                            <span
+                                                onClick={() => toast.success('Trang đang được phát triển!')}
                                                 className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 text-gray-700 transition-colors"
                                             >
                                                 <Settings size={16} /> Tài khoản
-                                            </Link>
+                                            </span>
                                             <Link
                                                 to="/account/orders"
                                                 onClick={() =>
@@ -366,13 +366,15 @@ export const Header = () => {
                                     </div>
                                 </div>
 
-                                <Link
-                                    to="/profile"
+                                <span
                                     className="flex items-center gap-2.5 text-xs text-gray-700 hover:text-amber-500 py-1 font-medium transition-colors"
-                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    onClick={() => {
+                                      toast.success('Trang đang được phát triển!');
+                                      setIsMobileMenuOpen(false)
+                                    }}
                                 >
                                     <Settings size={15} /> Tài khoản của tôi
-                                </Link>
+                                </span>
 
                                 <Link
                                     to="/account/orders"

@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { orderService } from '@/services/orderService';
 import toast from 'react-hot-toast';
-import { Link } from 'react-router-dom';
 
 const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
   PENDING: { label: 'Chờ xác nhận', color: 'bg-yellow-100 text-yellow-800' },
@@ -129,12 +129,12 @@ export default function TrackOrderPage() {
               {/* Thông tin giao hàng */}
               <div className="bg-gray-50/50 rounded-xl p-4 grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 text-sm text-gray-700 border border-gray-100">
                 <div>
-                  <p className="mb-2"><span className="text-gray-500 w-24 inline-block">Người nhận:</span> <span className="font-semibold">{orderResult.guestName}</span></p>
-                  <p><span className="text-gray-500 w-24 inline-block">Điện thoại:</span> <span className="font-semibold">{orderResult.guestPhone}</span></p>
+                  <p className="mb-2"><span className="text-gray-500 mr-1 inline-block">Người nhận:</span><span className="font-semibold">{orderResult.guestName}</span></p>
+                  <p><span className="text-gray-500 mr-1 inline-block">Điện thoại:</span><span className="font-semibold">{orderResult.guestPhone}</span></p>
                 </div>
                 <div>
-                  <p className="mb-2"><span className="text-gray-500 w-24 inline-block">Địa chỉ:</span> <span className="font-semibold">{orderResult.guestAddress}</span></p>
-                  {orderResult.note && <p><span className="text-gray-500 w-24 inline-block">Ghi chú:</span> <span className="font-medium text-orange-600">"{orderResult.note}"</span></p>}
+                  <p className="mb-2"><span className="text-gray-500 mr-1 inline-block">Địa chỉ:</span><span className="font-semibold">{orderResult.guestAddress}</span></p>
+                  {orderResult.note && <p><span className="text-gray-500 mr-1 inline-block">Ghi chú:</span><span className="font-medium text-orange-600">"{orderResult.note}"</span></p>}
                 </div>
               </div>
 

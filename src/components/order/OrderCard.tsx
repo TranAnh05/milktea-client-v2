@@ -32,12 +32,12 @@ export default function OrderCard({ order, onCancelSuccess }: OrderCardProps) {
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
       
       {/* HEADER: Mã đơn + Trạng thái */}
-      <div className="flex justify-between items-center p-4 border-b border-gray-100 bg-gray-50/50">
+      <div className="flex flex-col justify-start gap-y-2 md:flex-row md:justify-between md:items-center p-4 border-b border-gray-100 bg-gray-50/50">
         <div>
           <span className="font-bold text-gray-800">{order.orderId}</span>
           <span className="text-xs text-gray-500 ml-3">{formattedDate}</span>
         </div>
-        <span className={`px-3 py-1 rounded-full text-xs font-bold ${statusConfig.color}`}>
+        <span className={`w-fit px-3 py-1 rounded-full text-xs font-bold ${statusConfig.color}`}>
           {statusConfig.label}
         </span>
       </div>

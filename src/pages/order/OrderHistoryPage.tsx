@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { orderService } from '@/services/orderService';
 import OrderCard from '@/components/order/OrderCard';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 // Định nghĩa các Tab
 const TABS = [
@@ -18,6 +19,8 @@ const TABS = [
 ];
 
 export default function OrderHistoryPage() {
+  const navigate = useNavigate();
+
   const [activeTab, setActiveTab] = useState('');
   const [orders, setOrders] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -75,7 +78,7 @@ export default function OrderHistoryPage() {
         ) : orders.length === 0 ? (
           <div className="text-center py-20 bg-gray-50 rounded-2xl border border-dashed">
             <p className="text-gray-500 mb-4">Bạn chưa có đơn hàng nào ở trạng thái này.</p>
-            <button className="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
+            <button onClick={() => navigate('/category/all')} className="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
               Đi đặt trà sữa ngay
             </button>
           </div>
