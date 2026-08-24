@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Mail, Lock, Loader2, ArrowRight } from 'lucide-react';
 import { authService } from '@/services/authService';
+import { cartService } from '@/services/cartService';
 import type { LoginRequest } from '@/types/auth.types';
 import toast from 'react-hot-toast';
 import { useAppDispatch } from '@/redux/hooks';
@@ -43,6 +44,21 @@ export const LoginPage = () => {
     try {
       const response = await authService.login(data);
       dispatch(setAuth({ user: response.data.user, token: response.data.token }));
+
+      // Merge cart if guest cart exists
+      const guestCartJson = localStorage.getItem('guest_cart');
+      if (guestCartJson) {
+        try {
+          const guestCartItems = JSON.parse(guestCartJson);
+          if (guestCartItems.length > 0) {
+            await cartService.mergeCart(guestCartItems);
+            localStorage.removeItem('guest_cart');
+          }
+        } catch (e) {
+          console.error("Failed to merge guest cart:", e);
+        }
+      }
+
       toast.success(response.message || 'Đăng nhập thành công!');
       navigate('/');
     } catch (error: any) {
