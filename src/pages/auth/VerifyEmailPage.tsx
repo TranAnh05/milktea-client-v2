@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useState, useRef } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { authService } from '@/services/authService';
 import { CheckCircle2, XCircle, Loader2 } from 'lucide-react';

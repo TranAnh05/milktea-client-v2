@@ -1,9 +1,9 @@
 // src/components/ProtectedRoute.tsx
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
+import { useAppSelector } from '@/redux/hooks';
 
 export const ProtectedRoute = () => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading } = useAppSelector((state) => state.auth);
 
   if (isLoading) {
     return (
@@ -16,11 +16,9 @@ export const ProtectedRoute = () => {
     );
   }
 
-  // BƯỚC CHẶN 2: Đã load xong, nếu KHÔNG đăng nhập -> Trục xuất
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
-  // BƯỚC 3: Đã load xong và ĐÃ đăng nhập -> Cho qua
   return <Outlet />;
 };

@@ -17,7 +17,8 @@ import type {
 } from "@/types/product.types";
 import { formatCurrency } from "@/utils/formatters";
 import toast from "react-hot-toast";
-import { useCart } from "@/hooks/useCart";
+import { useAppDispatch } from "@/redux/hooks";
+import { addToCart } from "@/redux/slices/cartSlice";
 import Breadcrumb from '@/components/common/Breadcrumb';
 
 const SUGAR_LEVELS = ["100%", "70%", "50%", "30%", "0%"];
@@ -26,7 +27,7 @@ const ICE_LEVELS = ["100%", "70%", "50%", "0% (Nóng)"];
 export const ProductDetailPage = () => {
     const { slug } = useParams<{ slug: string }>();
     const navigate = useNavigate();
-    const { addToCart } = useCart();
+    const dispatch = useAppDispatch();
 
     // --- 1. STATES ---
     const [product, setProduct] = useState<ProductDetailResponse | null>(null);
@@ -111,6 +112,7 @@ export const ProductDetailPage = () => {
             productId: product.id,
             productName: product.name,
             thumbnailUrl: product.thumbnailUrl,
+            slug: product.slug, // Cần thêm field này nếu cần link trong CartPage
             sizeId: selectedSize.id,
             sizeName: selectedSize.name,
             sugarLevel: selectedSugar,
@@ -121,8 +123,7 @@ export const ProductDetailPage = () => {
             totalPrice: unitPrice * quantity,
         };
 
-        // 4. Bắn vào Context!
-        addToCart(cartItem as any); // Type any vì CartItem chưa được định nghĩa rõ ràng
+        dispatch(addToCart(cartItem));
         toast.success("Đã thêm vào giỏ hàng!");
     };
 
