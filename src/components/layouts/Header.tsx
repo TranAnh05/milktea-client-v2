@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
     ShoppingBag,
-    Search,
     Menu,
     X,
     ChevronDown,
@@ -10,23 +9,31 @@ import {
     ClipboardList,
     Settings,
 } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
-import { useCart } from "@/hooks/useCart";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { logout } from "@/redux/slices/authSlice";
 
 import type { CategoryResponse } from "@/types/category.types";
 import { categoryService } from "@/services/categoryService";
 
 export const Header = () => {
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const { user, isAuthenticated } = useAppSelector((state) => state.auth);
+    const { cartItems } = useAppSelector((state) => state.cart);
+    const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isCategoryOpen, setIsCategoryOpen] = useState(false);
     const [isMobileCategoryOpen, setIsMobileCategoryOpen] = useState(false);
-    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // Thêm state cho Dropdown user
+    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); 
 
     const [categories, setCategories] = useState<CategoryResponse[]>([]);
     
-    const { user, isAuthenticated, logout } = useAuth();
-    const { cartCount } = useCart();
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate("/login");
+    };
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -188,7 +195,7 @@ export const Header = () => {
                                             </Link>
                                             <div className="h-px bg-gray-100 my-1"></div>
                                             <button
-                                                onClick={logout}
+                                                onClick={handleLogout}
                                                 className="flex items-center gap-3 px-4 py-2 hover:bg-red-50 text-red-600 w-full text-left transition-colors"
                                             >
                                                 <LogOut size={16} /> Đăng xuất
@@ -252,14 +259,14 @@ export const Header = () => {
             {/* Mobile Menu Drawer Overlay */}
             {isMobileMenuOpen && (
                 <div
-                    className="fixed inset-0 bg-black/40 z-[9998] md:hidden backdrop-blur-sm transition-opacity duration-300"
+                    className="fixed inset-0 bg-black/40 z-9998 md:hidden backdrop-blur-sm transition-opacity duration-300"
                     onClick={() => setIsMobileMenuOpen(false)}
                 />
             )}
 
             {/* Mobile Menu Drawer */}
             <div
-                className={`fixed top-0 right-0 bottom-0 w-72 bg-white z-[9999] md:hidden shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
+                className={`fixed top-0 right-0 bottom-0 w-72 bg-white z-9999 md:hidden shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
                     isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
                 }`}
             >
@@ -381,7 +388,7 @@ export const Header = () => {
                                 <button
                                     onClick={() => {
                                         setIsMobileMenuOpen(false);
-                                        logout();
+                                        handleLogout();
                                     }}
                                     className="flex items-center gap-2.5 text-xs text-red-600 hover:text-red-700 py-1.5 font-medium transition-colors w-full text-left cursor-pointer"
                                 >

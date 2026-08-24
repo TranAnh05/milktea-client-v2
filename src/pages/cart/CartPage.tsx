@@ -7,13 +7,25 @@ import {
     ArrowLeft,
     ArrowRight,
 } from "lucide-react";
-import { useCart } from "@/hooks/useCart";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { updateQuantity, removeFromCart } from "@/redux/slices/cartSlice";
 import { formatCurrency } from "@/utils/formatters";
 
 export const CartPage = () => {
     const navigate = useNavigate();
-    const { cartItems, updateQuantity, removeFromCart, cartTotal, cartCount } =
-        useCart();
+    const dispatch = useAppDispatch();
+    const { cartItems } = useAppSelector((state) => state.cart);
+
+    const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    const cartTotal = cartItems.reduce((sum, item) => sum + item.totalPrice, 0);
+
+    const handleUpdateQuantity = (signature: string, newQuantity: number) => {
+        dispatch(updateQuantity({ signature, newQuantity }));
+    };
+
+    const handleRemoveFromCart = (signature: string) => {
+        dispatch(removeFromCart(signature));
+    };
 
     // --- TRẠNG THÁI: GIỎ HÀNG TRỐNG ---
     if (cartItems.length === 0) {
@@ -62,16 +74,16 @@ export const CartPage = () => {
                                 className="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-5 transition-all hover:shadow-md"
                             >
                                 {/* Hình ảnh */}
-                                <div className="w-24 h-24 sm:w-32 sm:h-32 bg-gray-100 rounded-xl overflow-hidden flex-shrink-0">
+                                <div className="w-24 h-24 sm:w-32 sm:h-32 bg-gray-100 rounded-xl overflow-hidden shrink-0">
                                     <img
-                                        src={`/assets/${item.thumbnailUrl}`}
+                                        src={item.thumbnailUrl}
                                         alt={item.productName}
                                         className="w-full h-full object-cover"
                                     />
                                 </div>
 
                                 {/* Thông tin chi tiết */}
-                                <div className="flex-grow flex flex-col justify-between">
+                                <div className="grow flex flex-col justify-between">
                                     <div className="flex justify-between items-start gap-4">
                                         <div>
                                             <Link
@@ -110,7 +122,7 @@ export const CartPage = () => {
                                         {/* Nút Xóa (Mobile đẩy xuống dưới, Desktop giữ trên cùng) */}
                                         <button
                                             onClick={() =>
-                                                removeFromCart(item.signature)
+                                                handleRemoveFromCart(item.signature)
                                             }
                                             className="text-gray-400 hover:text-red-500 p-2 -mr-2 -mt-2 transition-colors sm:block hidden"
                                             title="Xóa sản phẩm"
@@ -133,7 +145,7 @@ export const CartPage = () => {
                                             <div className="flex items-center bg-gray-50 border border-gray-200 rounded-lg h-9">
                                                 <button
                                                     onClick={() =>
-                                                        updateQuantity(
+                                                        handleUpdateQuantity(
                                                             item.signature,
                                                             item.quantity - 1,
                                                         )
@@ -150,7 +162,7 @@ export const CartPage = () => {
                                                 </div>
                                                 <button
                                                     onClick={() =>
-                                                        updateQuantity(
+                                                        handleUpdateQuantity(
                                                             item.signature,
                                                             item.quantity + 1,
                                                         )
@@ -164,7 +176,7 @@ export const CartPage = () => {
                                             {/* Nút xóa bản Mobile */}
                                             <button
                                                 onClick={() =>
-                                                    removeFromCart(
+                                                    handleRemoveFromCart(
                                                         item.signature,
                                                     )
                                                 }

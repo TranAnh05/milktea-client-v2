@@ -1,10 +1,15 @@
-import { Link } from 'react-router-dom';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Mail, Lock, Loader2, ArrowRight } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
+import { authService } from '@/services/authService';
 import type { LoginRequest } from '@/types/auth.types';
+import toast from 'react-hot-toast';
+import { useAppDispatch } from '@/redux/hooks';
+import { setAuth } from '@/redux/slices/authSlice';
 
 // 1. Định nghĩa luật Validate (Schema)
 const schema = yup.object().shape({
@@ -19,8 +24,9 @@ const schema = yup.object().shape({
 });
 
 export const LoginPage = () => {
-  // 2. Lấy hàm login và trạng thái isSubmitting từ Hook đã viết
-  const { login, isSubmitting } = useAuth();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // 3. Khởi tạo Form
   const {
@@ -33,7 +39,17 @@ export const LoginPage = () => {
 
   // 4. Hàm xử lý khi người dùng bấm Submit và đã qua được vòng Validate
   const onSubmit = async (data: LoginRequest) => {
-    await login(data);
+    setIsSubmitting(true);
+    try {
+      const response = await authService.login(data);
+      dispatch(setAuth({ user: response.data.user, token: response.data.token }));
+      toast.success(response.message || 'Đăng nhập thành công!');
+      navigate('/');
+    } catch (error: any) {
+      toast.error(error.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

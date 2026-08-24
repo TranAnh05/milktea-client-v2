@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Mail, Lock, Loader2, UserPlus, User, Phone } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'react-hot-toast';
+import { authService } from '@/services/authService';
 import type { RegisterRequest } from '@/types/auth.types';
 
 // Mở rộng interface để phục vụ riêng cho UI (Thêm trường confirmPassword)
@@ -29,7 +32,8 @@ const schema = yup.object().shape({
 });
 
 export const RegisterPage = () => {
-  const { register: registerAction, isSubmitting } = useAuth();
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     register,
@@ -42,7 +46,17 @@ export const RegisterPage = () => {
   const onSubmit = async (data: RegisterForm) => {
     // Loại bỏ trường confirmPassword trước khi gửi xuống Backend (vì API không cần trường này)
     const { confirmPassword, ...apiData } = data;
-    await registerAction(apiData);
+    
+    setIsSubmitting(true);
+    try {
+      await authService.register(apiData);
+      toast.success('Đăng ký tài khoản thành công! Vui lòng kiểm tra email để xác thực.');
+      navigate('/login');
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Đăng ký thất bại. Vui lòng thử lại.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

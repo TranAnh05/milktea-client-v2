@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useAuth } from "@/hooks/useAuth";
-import { useCart } from "@/hooks/useCart";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { clearCart } from "@/redux/slices/cartSlice";
 import { orderService, type OrderRequest } from "@/services/orderService";
 import {
     voucherService,
@@ -23,9 +23,11 @@ type CheckoutFormInputs = {
 
 export default function CheckoutPage() {
     const navigate = useNavigate();
-    const { isAuthenticated, user } = useAuth();
+    const dispatch = useAppDispatch();
+    const { isAuthenticated, user } = useAppSelector((state) => state.auth);
+    const { cartItems } = useAppSelector((state) => state.cart);
 
-    const { cartItems, cartTotal, clearCart } = useCart();
+    const cartTotal = cartItems.reduce((sum, item) => sum + item.totalPrice, 0);
 
     // --- STATE CHO VOUCHER ---
     const [voucherCodeInput, setVoucherCodeInput] = useState("");
@@ -208,7 +210,7 @@ export default function CheckoutPage() {
 
             if (response.data) {
                 toast.success("Đặt hàng thành công.");
-                clearCart();
+                dispatch(clearCart());
 
                 const { orderId , finalTotal, paymentMethod } = response.data
 
@@ -229,7 +231,7 @@ export default function CheckoutPage() {
             );
         }
     };
-
+    
     return (
         <div className="max-w-7xl mx-auto px-4 py-10 sm:px-6 lg:px-8 bg-gray-50 min-h-screen">
             <h1 className="text-3xl font-extrabold text-gray-900 mb-8">
