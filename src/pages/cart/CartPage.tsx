@@ -42,7 +42,7 @@ export const CartPage = () => {
                     chọn cho mình một hương vị yêu thích nhé!
                 </p>
                 <Link
-                    to="/"
+                    to="/category/all"
                     className="bg-gray-900 text-white px-8 py-3.5 rounded-full font-bold hover:bg-amber-500 transition-all flex items-center gap-2 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
                 >
                     Khám phá Thực đơn <ArrowRight size={20} />
@@ -74,7 +74,7 @@ export const CartPage = () => {
                                 className="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-5 transition-all hover:shadow-md"
                             >
                                 {/* Hình ảnh */}
-                                <div className="w-24 h-24 sm:w-32 sm:h-32 bg-gray-100 rounded-xl overflow-hidden shrink-0">
+                                <div className="w-full h-full sm:w-32 sm:h-32 bg-gray-100 rounded-xl overflow-hidden shrink-0">
                                     <img
                                         src={item.thumbnailUrl}
                                         alt={item.productName}
@@ -191,7 +191,7 @@ export const CartPage = () => {
                         ))}
 
                         <Link
-                            to="/"
+                            to="/category/all"
                             className="inline-flex items-center gap-2 text-amber-600 font-medium hover:text-amber-700 transition-colors mt-4"
                         >
                             <ArrowLeft size={18} /> Chọn thêm đồ uống khác
