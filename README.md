@@ -7,6 +7,7 @@ Dự án giao diện Client dành cho ứng dụng đặt trà sữa trực tuy�
 ## Tính Năng Chính
 
 * **Thực đơn và Tùy biến sản phẩm**: Hiển thị danh sách sản phẩm theo danh mục và sản phẩm khuyến mãi. Hỗ trợ tùy chỉnh kích cỡ (Size), mức đường, mức đá và lựa chọn thêm nhiều loại topping.
+* **Responsive Design**: Tối ưu hóa giao diện cho mọi loại thiết bị (Mobile, Tablet, Desktop), đảm bảo trải nghiệm mượt mà trên mọi kích thước màn hình.
 * **Xác thực người dùng**: Đăng ký tài khoản mới, xác minh mã kích hoạt qua email (OTP), và đăng nhập bảo mật bằng Token JWT.
 * **Quản lý giỏ hàng thông minh**: Hỗ trợ giỏ hàng tạm thời cho khách vãng lai và tự động gộp dữ liệu đồng bộ lên cơ sở dữ liệu sau khi đăng nhập thành công.
 * **Thanh toán và Đặt hàng**: Giao diện đặt hàng tinh gọn, tích hợp áp dụng mã giảm giá (Voucher), chọn phương thức thanh toán và hiển thị mã QR động để chuyển khoản giả lập.
@@ -19,7 +20,8 @@ Dự án giao diện Client dành cho ứng dụng đặt trà sữa trực tuy�
 * **Framework chính**: React v19.2
 * **Ngôn ngữ**: TypeScript v5.9
 * **Công cụ build**: Vite v8.0
-* **Giao diện & Styling**: Tailwind CSS v4.0
+* **Giao diện & Styling**: Tailwind CSS v4.0 (Responsive-first)
+* **Quản lý Trạng thái**: Redux Toolkit
 * **Quản lý Form**: React Hook Form kết hợp Yup (xác thực dữ liệu đầu vào)
 * **Kết nối API**: Axios (với interceptors xử lý đính kèm token tự động và xử lý lỗi tập trung)
 * **Thông báo**: React Hot Toast
@@ -32,9 +34,10 @@ Dự án giao diện Client dành cho ứng dụng đặt trà sữa trực tuy�
 src/
 ├── components/     # Các thành phần giao diện dùng chung và theo module
 ├── config/         # Cài đặt Axios client và các hằng số dùng chung
-├── contexts/       # Bộ quản lý trạng thái toàn cục (Xác thực, Giỏ hàng)
+├── contexts/       # Bộ quản lý trạng thái bổ trợ (nếu có)
 ├── hooks/          # Custom Hooks để tiêu thụ trạng thái nhanh (useAuth, useCart)
 ├── pages/          # Giao diện các trang của ứng dụng (Trang chủ, Giỏ hàng, Đặt hàng...)
+├── redux/          # Quản lý trạng thái toàn cục với Redux Toolkit
 ├── routes/         # Định tuyến bảo mật và điều hướng (AppRoutes, ProtectedRoute)
 ├── services/       # Các hàm gọi API tương tác với Backend
 ├── types/          # Định nghĩa kiểu dữ liệu TypeScript
